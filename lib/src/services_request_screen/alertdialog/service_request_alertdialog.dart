@@ -81,7 +81,7 @@ class ServiceRequestAlertDialog {
                           return DropdownMenuItem<Employees>(
                             value: employee,
                             child: Text(
-                                "${employee.firstname} ${employee.lastname}"),
+                                "${employee.firstname} ${employee.lastname} - ${employee.type}"),
                           );
                         }).toList(),
                       )),

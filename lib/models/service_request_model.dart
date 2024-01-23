@@ -25,6 +25,8 @@ class ServiceRequest {
   String contactno;
   bool status;
   String id;
+  String others;
+  List<String> images;
 
   ServiceRequest({
     required this.serviceType,
@@ -40,9 +42,13 @@ class ServiceRequest {
     required this.contactno,
     required this.status,
     required this.id,
+    required this.others,
+    required this.images,
   });
 
   factory ServiceRequest.fromJson(Map<String, dynamic> json) => ServiceRequest(
+        others: json["others"],
+        images: List<String>.from(json["images"].map((x) => x)),
         serviceType: json["serviceType"],
         firstname: json["firstname"],
         remarks: json["remarks"],
@@ -59,6 +65,8 @@ class ServiceRequest {
       );
 
   Map<String, dynamic> toJson() => {
+        "images": List<dynamic>.from(images.map((x) => x)),
+        "others": others,
         "serviceType": serviceType,
         "firstname": firstname,
         "remarks": remarks,

@@ -246,7 +246,31 @@ class ServiceRequestMissionOrderPdf {
                     child: pw.Text("Meter replacement")),
               ]),
             ]),
-            pw.SizedBox(height: 40),
+            pw.SizedBox(height: 20),
+            requestdata.others != ""
+                ? pw.Row(
+                    children: [
+                      pw.Text(
+                        "Other Details: ",
+                      ),
+                      pw.Container(
+                        width: 130,
+                        padding: pw.EdgeInsets.only(
+                          bottom: requestdata.others == "" ? 10 : 2,
+                        ),
+                        decoration: const pw.BoxDecoration(
+                            border: pw.Border(
+                                bottom: pw.BorderSide(
+                          width: 1.0,
+                        ))),
+                        child: pw.Text(
+                          "   ${requestdata.others} ",
+                        ),
+                      )
+                    ],
+                  )
+                : pw.SizedBox(),
+            pw.SizedBox(height: 20),
             pw.Table(
               border: pw.TableBorder.all(),
               children: [
