@@ -290,6 +290,9 @@ class EmployeeAlertDialogs {
             Padding(
               padding: EdgeInsets.only(left: 2.w, right: 2.w),
               child: ElevatedButton(
+                style: ButtonStyle(
+                    backgroundColor:
+                        MaterialStatePropertyAll(Colors.lightGreen[900])),
                 onPressed: () {
                   if (firstname.text.isEmpty ||
                       lastname.text.isEmpty ||
@@ -676,6 +679,9 @@ class EmployeeAlertDialogs {
             Padding(
               padding: EdgeInsets.only(left: 2.w, right: 2.w),
               child: ElevatedButton(
+                style: ButtonStyle(
+                    backgroundColor:
+                        MaterialStatePropertyAll(Colors.lightGreen[900])),
                 onPressed: () {
                   if (firstname.text.isEmpty ||
                       lastname.text.isEmpty ||

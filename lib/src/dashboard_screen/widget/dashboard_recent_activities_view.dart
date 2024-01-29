@@ -39,7 +39,7 @@ class DashboardOtherView extends GetView<DashboardController> {
                       children: [
                         CircleAvatar(
                           radius: 1.w,
-                          backgroundColor: Colors.lightGreenAccent,
+                          backgroundColor: Colors.lightGreen[900],
                           child: Center(
                             child: Text(
                               controller

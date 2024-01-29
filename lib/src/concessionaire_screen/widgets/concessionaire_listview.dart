@@ -74,7 +74,8 @@ class ConcessionaireListView extends GetView<ConcessionaireController> {
                                   child: const Icon(Icons.download)),
                             ),
                           ),
-                          controller.usersList[index].isAccepted == false
+                          controller.usersList[index].isAccepted == false &&
+                                  controller.usersList[index].status == ""
                               ? Expanded(
                                   child: Center(
                                     child: PopupMenuButton(
@@ -138,12 +139,17 @@ class ConcessionaireListView extends GetView<ConcessionaireController> {
                                     ),
                                   ),
                                 )
-                              : const Expanded(
+                              : Expanded(
                                   child: Center(
                                     child: Text(
-                                      "Accepted",
+                                      controller.usersList[index].status,
                                       style: TextStyle(
-                                          fontWeight: FontWeight.bold),
+                                          fontWeight: FontWeight.bold,
+                                          color: controller.usersList[index]
+                                                      .status ==
+                                                  "Accepted"
+                                              ? Colors.lightGreen
+                                              : Colors.red),
                                     ),
                                   ),
                                 ),

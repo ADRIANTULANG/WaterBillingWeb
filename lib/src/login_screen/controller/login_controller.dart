@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:waterbilling/services/getstorage_services.dart';
 import 'package:waterbilling/src/dashboard_screen/view/dashboard_tab_view.dart';
 import 'package:waterbilling/src/dashboard_screen/view/dashboard_view.dart';
@@ -10,6 +11,7 @@ class LoginController extends GetxController {
   TextEditingController username = TextEditingController();
   TextEditingController password = TextEditingController();
   RxBool isAllowed = false.obs;
+  String facebookUrl = 'https://www.facebook.com/Bocauewaterdistrict.gov.ph/';
 
   getDemoAllowed() async {
     try {
@@ -33,8 +35,9 @@ class LoginController extends GetxController {
         String id = FirebaseAuth.instance.currentUser!.uid;
         String email = FirebaseAuth.instance.currentUser!.email!;
         String role = res.docs[0]['role'];
-        Get.find<StorageServices>().saveRoute(screen: DashboardTabView.id);
-        Get.find<StorageServices>()
+        await Get.find<StorageServices>()
+            .saveRoute(screen: DashboardTabView.id);
+        await Get.find<StorageServices>()
             .saveCredentials(id: id, email: email, role: role);
         Get.toNamed(DashboardView.id);
         Future.delayed(const Duration(seconds: 2), () {
@@ -80,6 +83,15 @@ class LoginController extends GetxController {
             colorText: Colors.white,
             snackPosition: SnackPosition.BOTTOM);
       }
+    }
+  }
+
+  Future<void> launchInBrowserFacebook() async {
+    if (!await launchUrl(
+      Uri.parse(facebookUrl),
+      webOnlyWindowName: '_blank',
+    )) {
+      throw Exception('Could not launch $facebookUrl');
     }
   }
 

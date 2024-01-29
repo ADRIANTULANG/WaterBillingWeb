@@ -52,7 +52,7 @@ class DashboardController extends GetxController {
     ChartData('DEC', 10),
   ].obs;
 
-  getWaterBills() async {
+  getWaterBillLedters() async {
     try {
       var res =
           await FirebaseFirestore.instance.collection('waterbillLedgers').get();
@@ -78,7 +78,7 @@ class DashboardController extends GetxController {
         await chartdataSorter();
       }
     } catch (_) {
-      debugPrint("ERROR FUNCTION(getWaterBills) $_");
+      debugPrint("ERROR FUNCTION(getWaterBillLedters) $_");
     }
   }
 
@@ -280,7 +280,7 @@ class DashboardController extends GetxController {
 
   @override
   void onInit() {
-    getWaterBills();
+    getWaterBillLedters();
     getActivities();
     Get.put(ConcessionaireController());
     Get.put(WaterBillLedgerController());

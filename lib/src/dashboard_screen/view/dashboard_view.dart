@@ -49,7 +49,7 @@ class _DashboardViewState extends State<DashboardView> {
             child: Icon(Icons.add),
           ),
           foregroundColor: Colors.white,
-          backgroundColor: Colors.lightGreen,
+          backgroundColor: Colors.lightGreen[900],
           title: Row(
             children: [
               SizedBox(
@@ -121,9 +121,9 @@ class _DashboardViewState extends State<DashboardView> {
                       width: 5.w,
                       decoration: const BoxDecoration(
                           shape: BoxShape.circle, color: Colors.white),
-                      child: const Icon(
+                      child: Icon(
                         Icons.search,
-                        color: Colors.lightGreen,
+                        color: Colors.lightGreen[900],
                       ),
                     )
                   : const SizedBox())
@@ -197,10 +197,10 @@ class _DashboardViewState extends State<DashboardView> {
           ],
         ),
         sideBar: SideBar(
-          iconColor: Colors.lightGreen,
+          iconColor: Colors.lightGreen[900],
           backgroundColor: Colors.white,
           activeBackgroundColor: Colors.lightGreen,
-          activeIconColor: Colors.lightGreen,
+          activeIconColor: Colors.lightGreen[900],
           textStyle: const TextStyle(color: Colors.black),
           items: const [
             AdminMenuItem(
@@ -263,7 +263,7 @@ class _DashboardViewState extends State<DashboardView> {
             child: Container(
               height: 7.h,
               width: double.infinity,
-              color: Colors.lightGreen,
+              color: Colors.lightGreen[900],
               child: const Center(
                 child: Text(
                   'Logout',

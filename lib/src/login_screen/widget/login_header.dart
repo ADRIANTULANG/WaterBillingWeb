@@ -27,11 +27,11 @@ class LoginHeaderView extends GetView<LoginController> {
                     width: .5.w,
                   ),
                   Text(
-                    "CSR & WBC ",
+                    "  BOCAUE WATER DISTRICT ",
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 3.sp,
-                        color: Colors.lightGreen),
+                        color: Colors.lightGreen[900]),
                   ),
                 ],
               ),
@@ -46,7 +46,7 @@ class LoginHeaderView extends GetView<LoginController> {
                 Padding(
                   padding: EdgeInsets.only(top: 1.h),
                   child: Text(
-                    "Contact us",
+                    "",
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 2.5.sp,
@@ -59,7 +59,7 @@ class LoginHeaderView extends GetView<LoginController> {
                 Padding(
                   padding: EdgeInsets.only(top: 1.h),
                   child: Text(
-                    "About us",
+                    "",
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 2.5.sp,
@@ -72,7 +72,7 @@ class LoginHeaderView extends GetView<LoginController> {
                 Padding(
                   padding: EdgeInsets.only(top: 1.h),
                   child: Text(
-                    "Log in",
+                    "",
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 2.5.sp,

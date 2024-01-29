@@ -48,7 +48,7 @@ class DashboardUpperTabButtonsView extends GetView<DashboardController> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Icon(Icons.person,
-                          size: 8.sp, color: Colors.lightGreenAccent),
+                          size: 8.sp, color: Colors.lightGreen[900]),
                       SizedBox(
                         width: 1.w,
                       ),
@@ -57,7 +57,7 @@ class DashboardUpperTabButtonsView extends GetView<DashboardController> {
                         style: TextStyle(
                             fontFamily: "BariolBold",
                             fontSize: 3.sp,
-                            color: Colors.lightGreenAccent),
+                            color: Colors.lightGreen[900]),
                       )
                     ],
                   ),
@@ -89,7 +89,7 @@ class DashboardUpperTabButtonsView extends GetView<DashboardController> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Icon(Icons.water,
-                          size: 8.sp, color: Colors.lightGreenAccent),
+                          size: 8.sp, color: Colors.lightGreen[900]),
                       SizedBox(
                         width: 1.w,
                       ),
@@ -98,7 +98,7 @@ class DashboardUpperTabButtonsView extends GetView<DashboardController> {
                         style: TextStyle(
                             fontFamily: "BariolBold",
                             fontSize: 3.sp,
-                            color: Colors.lightGreenAccent),
+                            color: Colors.lightGreen[900]),
                       )
                     ],
                   ),
@@ -171,7 +171,7 @@ class DashboardUpperTabButtonsView extends GetView<DashboardController> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Icon(Icons.request_page_rounded,
-                          size: 8.sp, color: Colors.lightGreenAccent),
+                          size: 8.sp, color: Colors.lightGreen[900]),
                       SizedBox(
                         width: 1.w,
                       ),
@@ -180,7 +180,7 @@ class DashboardUpperTabButtonsView extends GetView<DashboardController> {
                         style: TextStyle(
                             fontFamily: "BariolBold",
                             fontSize: 3.sp,
-                            color: Colors.lightGreenAccent),
+                            color: Colors.lightGreen[900]),
                       )
                     ],
                   ),
@@ -212,7 +212,7 @@ class DashboardUpperTabButtonsView extends GetView<DashboardController> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Icon(Icons.receipt_long,
-                          size: 8.sp, color: Colors.lightGreenAccent),
+                          size: 8.sp, color: Colors.lightGreen[900]),
                       SizedBox(
                         width: 1.w,
                       ),
@@ -221,7 +221,7 @@ class DashboardUpperTabButtonsView extends GetView<DashboardController> {
                         style: TextStyle(
                             fontFamily: "BariolBold",
                             fontSize: 3.sp,
-                            color: Colors.lightGreenAccent),
+                            color: Colors.lightGreen[900]),
                       )
                     ],
                   ),
@@ -253,7 +253,7 @@ class DashboardUpperTabButtonsView extends GetView<DashboardController> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Icon(Icons.group,
-                          size: 8.sp, color: Colors.lightGreenAccent),
+                          size: 8.sp, color: Colors.lightGreen[900]),
                       SizedBox(
                         width: 1.w,
                       ),
@@ -262,7 +262,7 @@ class DashboardUpperTabButtonsView extends GetView<DashboardController> {
                         style: TextStyle(
                             fontFamily: "BariolBold",
                             fontSize: 3.sp,
-                            color: Colors.lightGreenAccent),
+                            color: Colors.lightGreen[900]),
                       )
                     ],
                   ),

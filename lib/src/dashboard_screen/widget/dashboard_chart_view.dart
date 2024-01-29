@@ -52,7 +52,7 @@ class DashboardChartView extends GetView<DashboardController> {
                           onChanged: (int? value) {
                             // This is called when the user selects an item.
                             controller.selectedYear.value = value!;
-                            controller.getWaterBills();
+                            controller.getWaterBillLedters();
                           },
                           items: [
                             2011,
@@ -92,7 +92,7 @@ class DashboardChartView extends GetView<DashboardController> {
                         PopupMenuItem(
                           onTap: () {
                             controller.selectedDataToCompare.value = "amount";
-                            controller.getWaterBills();
+                            controller.getWaterBillLedters();
                           },
                           value: "amount",
                           child: const Text('Amount'),
@@ -100,7 +100,7 @@ class DashboardChartView extends GetView<DashboardController> {
                         PopupMenuItem(
                           onTap: () {
                             controller.selectedDataToCompare.value = "usage";
-                            controller.getWaterBills();
+                            controller.getWaterBillLedters();
                           },
                           value: "usage",
                           child: const Text('Usage'),
@@ -132,7 +132,7 @@ class DashboardChartView extends GetView<DashboardController> {
                               dataSource: controller.chartdata,
                               xValueMapper: (ChartData data, _) => data.x,
                               yValueMapper: (ChartData data, _) => data.y,
-                              color: Colors.lightGreenAccent)
+                              color: Colors.lightGreen[900])
                         ])
                   : controller.selectedChart.value == "line"
                       ? SfCartesianChart(
@@ -146,7 +146,7 @@ class DashboardChartView extends GetView<DashboardController> {
                                   dataSource: controller.chartdata,
                                   xValueMapper: (ChartData data, _) => data.x,
                                   yValueMapper: (ChartData data, _) => data.y,
-                                  color: Colors.lightGreenAccent)
+                                  color: Colors.lightGreen[900])
                             ])
                       : controller.selectedChart.value == "area"
                           ? SfCartesianChart(
@@ -162,7 +162,7 @@ class DashboardChartView extends GetView<DashboardController> {
                                           data.x,
                                       yValueMapper: (ChartData data, _) =>
                                           data.y,
-                                      color: Colors.lightGreenAccent)
+                                      color: Colors.lightGreen[900])
                                 ])
                           : controller.selectedChart.value == "bubble"
                               ? SfCartesianChart(
@@ -178,7 +178,7 @@ class DashboardChartView extends GetView<DashboardController> {
                                               data.x,
                                           yValueMapper: (ChartData data, _) =>
                                               data.y,
-                                          color: Colors.lightGreenAccent)
+                                          color: Colors.lightGreen[900])
                                     ])
                               : SfCartesianChart(
                                   primaryXAxis: CategoryAxis(),
@@ -193,7 +193,7 @@ class DashboardChartView extends GetView<DashboardController> {
                                               data.x,
                                           yValueMapper: (ChartData data, _) =>
                                               data.y,
-                                          color: Colors.lightGreenAccent)
+                                          color: Colors.lightGreen[900])
                                     ]),
             ),
           ),

@@ -142,6 +142,9 @@ class OtherChargesAlertDialogs {
             Padding(
               padding: EdgeInsets.only(left: 2.w, right: 2.w),
               child: ElevatedButton(
+                style: ButtonStyle(
+                    backgroundColor:
+                        MaterialStatePropertyAll(Colors.lightGreen[900])),
                 onPressed: () {
                   if (accountnumber.text.isEmpty) {
                     Get.snackbar("Message", "Missing input",
@@ -367,6 +370,9 @@ class OtherChargesAlertDialogs {
             Padding(
               padding: EdgeInsets.only(left: 2.w, right: 2.w),
               child: ElevatedButton(
+                style: ButtonStyle(
+                    backgroundColor:
+                        MaterialStatePropertyAll(Colors.lightGreen[900])),
                 onPressed: () {
                   if (accountnumber.text.isEmpty) {
                     Get.snackbar("Message", "Missing input",

@@ -128,7 +128,7 @@ class LoginBodyView extends GetView<LoginController> {
                         alignment: Alignment.center,
                         decoration: BoxDecoration(
                             color: Colors.lightGreen[900],
-                            border: Border.all(color: Colors.lightGreen),
+                            border: Border.all(color: Colors.green),
                             borderRadius: BorderRadius.circular(8)),
                         child: Text(
                           "LOGIN",

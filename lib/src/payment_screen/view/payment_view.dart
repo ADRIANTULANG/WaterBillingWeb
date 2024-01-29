@@ -30,6 +30,9 @@ class PaymentView extends GetView<PaymentController> {
               ),
 
               ElevatedButton(
+                style: ButtonStyle(
+                    backgroundColor:
+                        MaterialStatePropertyAll(Colors.lightGreen[900])),
                 onPressed: () {
                   controller.getPayments();
                 },

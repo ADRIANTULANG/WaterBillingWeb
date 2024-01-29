@@ -28,6 +28,9 @@ class ServiceRequestView extends GetView<ServiceRequestController> {
                 style: TextStyle(fontSize: 5.sp, fontWeight: FontWeight.bold),
               ),
               ElevatedButton(
+                style: ButtonStyle(
+                    backgroundColor:
+                        MaterialStatePropertyAll(Colors.lightGreen[900])),
                 onPressed: () {
                   controller.getServiceRequest();
                 },

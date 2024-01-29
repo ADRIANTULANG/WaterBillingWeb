@@ -21,6 +21,9 @@ class ConcessionaireController extends GetxController {
       for (var i = 0; i < users.length; i++) {
         Map mapdata = users[i].data();
         mapdata['id'] = users[i].id;
+        if (mapdata.containsKey('status') == false) {
+          mapdata['status'] = '';
+        }
         mapdata['datecreated'] = users[i]['datecreated'].toDate().toString();
         userslist.add(mapdata);
       }
@@ -33,10 +36,8 @@ class ConcessionaireController extends GetxController {
 
   acceptRejectUser({required bool action, required String docid}) async {
     try {
-      await FirebaseFirestore.instance
-          .collection('users')
-          .doc(docid)
-          .update({"isAccepted": action});
+      await FirebaseFirestore.instance.collection('users').doc(docid).update(
+          {"isAccepted": action, 'status': action ? "Accepted" : "Rejected"});
       getConcessionaires();
     } catch (_) {
       debugPrint("ERROR FUNCTION(acceptRejectUser) $_");

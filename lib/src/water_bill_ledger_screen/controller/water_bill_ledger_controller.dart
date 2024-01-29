@@ -17,6 +17,7 @@ class WaterBillLedgerController extends GetxController {
   RxList<WaterBilling> waterBillMasterList = <WaterBilling>[].obs;
 
   // BOOLEANS
+  RxBool isWaterBillError = false.obs;
   // STRING
 
   getWaterBills() async {
@@ -55,6 +56,7 @@ class WaterBillLedgerController extends GetxController {
       }
     } catch (_) {
       debugPrint("ERROR FUNCTION(getWaterBills) $_");
+      isWaterBillError.value = true;
     }
   }
 
@@ -79,53 +81,57 @@ class WaterBillLedgerController extends GetxController {
           // print("kani === $row");
           if (count > 0) {
             Map datamap = {};
-            for (var i = 0; i < row.length; i++) {
-              if (i == 0) {
-                datamap['accountNumber'] =
-                    row[i]!.value.toString().replaceAll("-", "");
+            if (row.length == 4) {
+              for (var i = 0; i < row.length; i++) {
+                if (i == 0) {
+                  datamap['accountNumber'] =
+                      row[i]!.value.toString().replaceAll("-", "");
+                }
+                if (i == 1) {
+                  datamap['clientName'] = row[i]!.value.toString();
+                }
+                if (i == 2) {
+                  datamap['amountCollected'] =
+                      double.parse(row[i]!.value.toString());
+                }
+                if (i == 3) {
+                  datamap['reference'] = row[i]!.value.toString();
+                }
               }
-              if (i == 1) {
-                datamap['clientName'] = row[i]!.value.toString();
-              }
-              if (i == 2) {
-                datamap['amountCollected'] =
-                    double.parse(row[i]!.value.toString());
-              }
-              if (i == 3) {
-                datamap['reference'] = row[i]!.value.toString();
-              }
-            }
-            datamap['dateuploaded'] = Timestamp.now();
-            // print("$count $datamap");
-            data.add(datamap);
-            var res = await FirebaseFirestore.instance
-                .collection('paymentCollection')
-                .where('reference', isEqualTo: datamap['reference'].toString())
-                .get();
-            if (res.docs.isEmpty) {
-              var newPaymentDocRef = FirebaseFirestore.instance
+
+              datamap['dateuploaded'] = Timestamp.now();
+              // print("$count $datamap");
+              data.add(datamap);
+              var res = await FirebaseFirestore.instance
                   .collection('paymentCollection')
-                  .doc();
-              batch.set(newPaymentDocRef, {
-                "accountNumber": datamap['accountNumber'],
-                "clientName": datamap['clientName'],
-                "reference": datamap['reference'],
-                "amountCollected": datamap['amountCollected'],
-                "dateuploaded": datamap['dateuploaded'],
-              });
-              var billres = await FirebaseFirestore.instance
-                  .collection('waterbill')
-                  .where('accountNumber', isEqualTo: datamap['accountNumber'])
-                  .limit(1)
+                  .where('reference',
+                      isEqualTo: datamap['reference'].toString())
                   .get();
-              if (billres.docs.isNotEmpty) {
-                var billdetail = billres.docs[0];
-                var billdocref = FirebaseFirestore.instance
+              if (res.docs.isEmpty) {
+                var newPaymentDocRef = FirebaseFirestore.instance
+                    .collection('paymentCollection')
+                    .doc();
+                batch.set(newPaymentDocRef, {
+                  "accountNumber": datamap['accountNumber'],
+                  "clientName": datamap['clientName'],
+                  "reference": datamap['reference'],
+                  "amountCollected": datamap['amountCollected'],
+                  "dateuploaded": datamap['dateuploaded'],
+                });
+                var billres = await FirebaseFirestore.instance
                     .collection('waterbill')
-                    .doc(billdetail.id);
-                var newAmount =
-                    billdetail['amount'] - datamap['amountCollected'];
-                batch.update(billdocref, {"amount": newAmount});
+                    .where('accountNumber', isEqualTo: datamap['accountNumber'])
+                    .limit(1)
+                    .get();
+                if (billres.docs.isNotEmpty) {
+                  var billdetail = billres.docs[0];
+                  var billdocref = FirebaseFirestore.instance
+                      .collection('waterbill')
+                      .doc(billdetail.id);
+                  var newAmount =
+                      billdetail['amount'] - datamap['amountCollected'];
+                  batch.update(billdocref, {"amount": newAmount});
+                }
               }
             }
           }
@@ -161,49 +167,52 @@ class WaterBillLedgerController extends GetxController {
           // print("kani === $row");
           if (count > 0) {
             Map datamap = {};
-            for (var i = 0; i < row.length; i++) {
-              if (i == 0) {
-                datamap['iDnumber'] =
-                    row[i]!.value.toString().replaceAll("-", "").toString();
+            if (row.length == 11) {
+              for (var i = 0; i < row.length; i++) {
+                if (i == 0) {
+                  datamap['iDnumber'] =
+                      row[i]!.value.toString().replaceAll("-", "").toString();
+                }
+                if (i == 1) {
+                  datamap['accountNumber'] =
+                      row[i]!.value.toString().replaceAll("-", "").toString();
+                }
+                if (i == 2) {
+                  datamap['prevReading'] =
+                      double.parse(row[i]!.value.toString());
+                }
+                if (i == 3) {
+                  datamap['presentReading'] =
+                      double.parse(row[i]!.value.toString());
+                }
+                if (i == 4) {
+                  datamap['usage'] = double.parse(row[i]!.value.toString());
+                }
+                if (i == 5) {
+                  datamap['amount'] = double.parse(row[i]!.value.toString());
+                }
+                if (i == 6) {
+                  datamap['discount'] = double.parse(row[i]!.value.toString());
+                }
+                if (i == 7) {
+                  datamap['billingDate'] = Timestamp.fromDate(
+                      DateTime.parse(row[i]!.value.toString()));
+                }
+                if (i == 8) {
+                  datamap['billingDateTimeStamp'] = Timestamp.fromDate(
+                      DateTime.parse(row[i]!.value.toString()));
+                }
+                if (i == 9) {
+                  datamap['clientName'] = row[i]!.value.toString();
+                }
+                if (i == 10) {
+                  datamap['dueDate'] = Timestamp.fromDate(
+                      DateTime.parse(row[i]!.value.toString()));
+                }
               }
-              if (i == 1) {
-                datamap['accountNumber'] =
-                    row[i]!.value.toString().replaceAll("-", "").toString();
-              }
-              if (i == 2) {
-                datamap['prevReading'] = double.parse(row[i]!.value.toString());
-              }
-              if (i == 3) {
-                datamap['presentReading'] =
-                    double.parse(row[i]!.value.toString());
-              }
-              if (i == 4) {
-                datamap['usage'] = double.parse(row[i]!.value.toString());
-              }
-              if (i == 5) {
-                datamap['amount'] = double.parse(row[i]!.value.toString());
-              }
-              if (i == 6) {
-                datamap['discount'] = double.parse(row[i]!.value.toString());
-              }
-              if (i == 7) {
-                datamap['billingDate'] = Timestamp.fromDate(
-                    DateTime.parse(row[i]!.value.toString()));
-              }
-              if (i == 8) {
-                datamap['billingDateTimeStamp'] = Timestamp.fromDate(
-                    DateTime.parse(row[i]!.value.toString()));
-              }
-              if (i == 9) {
-                datamap['clientName'] = row[i]!.value.toString();
-              }
-              if (i == 10) {
-                datamap['dueDate'] = Timestamp.fromDate(
-                    DateTime.parse(row[i]!.value.toString()));
-              }
+              // print("$count $datamap");
+              data.add(datamap);
             }
-            // print("$count $datamap");
-            data.add(datamap);
           }
           count++;
         }
@@ -288,6 +297,9 @@ class WaterBillLedgerController extends GetxController {
             "billingDateTimeStamp": data[x]['billingDateTimeStamp'],
             "clientName": data[x]['clientName'],
             "dueDate": data[x]['dueDate'],
+            "usage": data[x]['usage'],
+            "prevReading": data[x]['prevReading'],
+            "presentReading": data[x]['presentReading'],
           });
         }
       }

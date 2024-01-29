@@ -32,14 +32,26 @@ class WaterBillLedgerView extends GetView<WaterBillLedgerController> {
               Row(
                 children: [
                   ElevatedButton(
+                      style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStatePropertyAll(Colors.lightGreen[900])),
                       onPressed: () {
-                        if (Get.find<StorageServices>().storage.read('role') ==
-                            "admin") {
-                          controller.readExcelFilePaymentCollection();
+                        if (controller.isWaterBillError.value == false) {
+                          if (Get.find<StorageServices>()
+                                  .storage
+                                  .read('role') ==
+                              "admin") {
+                            controller.readExcelFilePaymentCollection();
+                          } else {
+                            Get.snackbar("Message",
+                                "Sorry. only the admin can upload payments.",
+                                backgroundColor: Colors.green,
+                                colorText: Colors.white);
+                          }
                         } else {
                           Get.snackbar("Message",
-                              "Sorry. only the admin can upload payments.",
-                              backgroundColor: Colors.green,
+                              "Sorry. Something went wrong with the billing data please contact admin to check the data. Thank you.",
+                              backgroundColor: Colors.red,
                               colorText: Colors.white);
                         }
                       },
@@ -52,14 +64,26 @@ class WaterBillLedgerView extends GetView<WaterBillLedgerController> {
                     width: 1.5.w,
                   ),
                   ElevatedButton(
+                      style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStatePropertyAll(Colors.lightGreen[900])),
                       onPressed: () {
-                        if (Get.find<StorageServices>().storage.read('role') ==
-                            "admin") {
-                          controller.readExcelFileBilling();
+                        if (controller.isWaterBillError.value == false) {
+                          if (Get.find<StorageServices>()
+                                  .storage
+                                  .read('role') ==
+                              "admin") {
+                            controller.readExcelFileBilling();
+                          } else {
+                            Get.snackbar("Message",
+                                "Sorry. only the admin can upload billings.",
+                                backgroundColor: Colors.green,
+                                colorText: Colors.white);
+                          }
                         } else {
                           Get.snackbar("Message",
-                              "Sorry. only the admin can upload billings.",
-                              backgroundColor: Colors.green,
+                              "Sorry. Something went wrong with the billing data please contact admin to check the data. Thank you.",
+                              backgroundColor: Colors.red,
                               colorText: Colors.white);
                         }
                       },
@@ -72,6 +96,9 @@ class WaterBillLedgerView extends GetView<WaterBillLedgerController> {
                     width: 1.5.w,
                   ),
                   ElevatedButton(
+                    style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStatePropertyAll(Colors.lightGreen[900])),
                     onPressed: () {
                       controller.getWaterBills();
                     },

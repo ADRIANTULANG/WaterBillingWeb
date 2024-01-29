@@ -37,7 +37,7 @@ class LoginFooterView extends GetView<LoginController> {
               SizedBox(
                 width: .5.w,
               ),
-              const Text("user@gmail.com"),
+              const Text("bocauewd086@gmail.com"),
             ],
           ),
           SizedBox(
@@ -59,35 +59,11 @@ class LoginFooterView extends GetView<LoginController> {
             children: [
               InkWell(
                 onTap: () {
-                  // controller.launchInBrowserFacebook();
+                  controller.launchInBrowserFacebook();
                 },
                 child: const Icon(
                   Icons.facebook_rounded,
-                  color: Colors.lightGreen,
-                ),
-              ),
-              SizedBox(
-                width: 1.w,
-              ),
-              InkWell(
-                onTap: () async {
-                  // controller.launchInBrowserWeChat();
-                },
-                child: const Icon(
-                  Icons.wechat_sharp,
-                  color: Colors.green,
-                ),
-              ),
-              SizedBox(
-                width: 1.w,
-              ),
-              InkWell(
-                onTap: () {
-                  // controller.launchInBrowserDiscord();
-                },
-                child: const Icon(
-                  Icons.discord_outlined,
-                  color: Colors.purple,
+                  color: Colors.lightBlue,
                 ),
               ),
             ],

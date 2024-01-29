@@ -31,6 +31,9 @@ class EmployeeView extends GetView<EmployeeController> {
               Row(
                 children: [
                   ElevatedButton(
+                    style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStatePropertyAll(Colors.lightGreen[900])),
                     onPressed: () {
                       if (Get.find<StorageServices>().storage.read('role') ==
                           "admin") {
@@ -64,6 +67,9 @@ class EmployeeView extends GetView<EmployeeController> {
                     width: 1.5.w,
                   ),
                   ElevatedButton(
+                    style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStatePropertyAll(Colors.lightGreen[900])),
                     onPressed: () {
                       controller.getEmployees();
                     },

@@ -96,6 +96,9 @@ class ServiceRequestAlertDialog {
                   height: 7.h,
                   width: 100.w,
                   child: ElevatedButton(
+                      style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStatePropertyAll(Colors.lightGreen[900])),
                       onPressed: () {
                         controller.updateStatusAndAssign(
                             employeeID: controller.selectedEmployee!.id,

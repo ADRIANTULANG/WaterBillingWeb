@@ -19,23 +19,37 @@ class EmployeeController extends GetxController {
     required String password,
   }) async {
     try {
-      await FirebaseFirestore.instance.collection('employees').add({
-        "firstname": firstname,
-        "lastname": lastname,
-        "contactno": contactno,
-        "username": username,
-        "password": password,
-        "type": type,
-        "datecreated": Timestamp.now(),
-        "fcmToken": ""
-      });
-      getEmployees();
-      Get.back();
-      Get.snackbar("Message", "Successfully added",
-          backgroundColor: Colors.green,
-          colorText: Colors.white,
-          snackPosition: SnackPosition.BOTTOM);
-    } catch (_) {}
+      var isExist =
+          await checkEmployeeExist(username: username, password: password);
+      if (isExist) {
+        Get.snackbar("Message",
+            "Account already exist. Please try different from the previous",
+            backgroundColor: Colors.red,
+            colorText: Colors.white,
+            snackPosition: SnackPosition.BOTTOM);
+      } else {
+        var doc = FirebaseFirestore.instance.collection('employees').doc();
+        await doc.set({
+          "firstname": firstname,
+          "lastname": lastname,
+          "contactno": contactno,
+          "username": username,
+          "password": password,
+          "type": type,
+          "datecreated": Timestamp.now(),
+          "fcmToken": "",
+          "docid": doc.id
+        });
+        getEmployees();
+        Get.back();
+        Get.snackbar("Message", "Successfully added",
+            backgroundColor: Colors.green,
+            colorText: Colors.white,
+            snackPosition: SnackPosition.BOTTOM);
+      }
+    } catch (_) {
+      debugPrint("ERROR FUNCTION(addEmployee) $_");
+    }
   }
 
   getEmployees() async {
@@ -56,7 +70,9 @@ class EmployeeController extends GetxController {
         employeeesList.assignAll(employeesFromJson(jsonEncode(data)));
         employeeesMaterList.assignAll(employeesFromJson(jsonEncode(data)));
       }
-    } catch (_) {}
+    } catch (_) {
+      debugPrint("ERROR FUNCTION(getEmployees) $_");
+    }
   }
 
   editCharges({
@@ -69,24 +85,36 @@ class EmployeeController extends GetxController {
     required String contactno,
   }) async {
     try {
-      await FirebaseFirestore.instance
-          .collection('employees')
-          .doc(docid)
-          .update({
-        "type": type,
-        "firstname": fname,
-        "lastname": lname,
-        "contactno": contactno,
-        "username": username,
-        "password": password,
-      });
-      getEmployees();
-      Get.back();
-      Get.snackbar("Message", "Successfully edited",
-          backgroundColor: Colors.green,
-          colorText: Colors.white,
-          snackPosition: SnackPosition.BOTTOM);
-    } catch (_) {}
+      var isExist = await checkEditEmployeeExist(
+          username: username, password: password, docid: docid);
+      if (isExist) {
+        Get.snackbar("Message",
+            "Account already exist. Please try different from the previous",
+            backgroundColor: Colors.red,
+            colorText: Colors.white,
+            snackPosition: SnackPosition.BOTTOM);
+      } else {
+        await FirebaseFirestore.instance
+            .collection('employees')
+            .doc(docid)
+            .update({
+          "type": type,
+          "firstname": fname,
+          "lastname": lname,
+          "contactno": contactno,
+          "username": username,
+          "password": password,
+        });
+        getEmployees();
+        Get.back();
+        Get.snackbar("Message", "Successfully edited",
+            backgroundColor: Colors.green,
+            colorText: Colors.white,
+            snackPosition: SnackPosition.BOTTOM);
+      }
+    } catch (_) {
+      debugPrint("ERROR FUNCTION(editCharges) $_");
+    }
   }
 
   deleteData({required String docid}) async {
@@ -101,7 +129,9 @@ class EmployeeController extends GetxController {
           backgroundColor: Colors.green,
           colorText: Colors.white,
           snackPosition: SnackPosition.BOTTOM);
-    } catch (_) {}
+    } catch (_) {
+      debugPrint("ERROR FUNCTION(deleteData) $_");
+    }
   }
 
   searchEmployees({required String word}) async {
@@ -134,6 +164,47 @@ class EmployeeController extends GetxController {
       }
     } else {
       employeeesList.assignAll(employeeesMaterList);
+    }
+  }
+
+  Future<bool> checkEmployeeExist(
+      {required String username, required String password}) async {
+    try {
+      var res = await FirebaseFirestore.instance
+          .collection('employees')
+          .where('username', isEqualTo: username)
+          .where('password', isEqualTo: password)
+          .get();
+      if (res.docs.isEmpty) {
+        return false;
+      } else {
+        return true;
+      }
+    } catch (_) {
+      debugPrint("ERROR FUNCTION(checkEmployeeExist) $_");
+      return true;
+    }
+  }
+
+  Future<bool> checkEditEmployeeExist(
+      {required String username,
+      required String password,
+      required String docid}) async {
+    try {
+      var res = await FirebaseFirestore.instance
+          .collection('employees')
+          .where('docid', isNotEqualTo: docid)
+          .where('username', isEqualTo: username)
+          .where('password', isEqualTo: password)
+          .get();
+      if (res.docs.isEmpty) {
+        return false;
+      } else {
+        return true;
+      }
+    } catch (_) {
+      debugPrint("ERROR FUNCTION(checkEditEmployeeExist) $_");
+      return true;
     }
   }
 

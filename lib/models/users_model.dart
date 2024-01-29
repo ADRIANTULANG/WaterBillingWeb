@@ -20,6 +20,7 @@ class Users {
   String id;
   String urlLink;
   String fcmToken;
+  String status;
 
   Users({
     required this.isActive,
@@ -35,6 +36,7 @@ class Users {
     required this.id,
     required this.urlLink,
     required this.fcmToken,
+    required this.status,
   });
 
   factory Users.fromJson(Map<String, dynamic> json) => Users(
@@ -51,6 +53,7 @@ class Users {
         id: json["id"],
         urlLink: json["urlLink"],
         fcmToken: json["fcmToken"],
+        status: json["status"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -67,5 +70,6 @@ class Users {
         "urlLink": urlLink,
         "id": id,
         "fcmToken": fcmToken,
+        "status": status,
       };
 }
