@@ -301,6 +301,21 @@ class WaterBillLedgerController extends GetxController {
             "prevReading": data[x]['prevReading'],
             "presentReading": data[x]['presentReading'],
           });
+          var newleddoc =
+              FirebaseFirestore.instance.collection('waterbillLedgers').doc();
+          batch.set(newleddoc, {
+            "iDnumber": data[x]['iDnumber'],
+            "accountNumber": data[x]['accountNumber'],
+            "amount": data[x]['amount'],
+            "discount": data[x]['discount'],
+            "billingDate": data[x]['billingDate'],
+            "billingDateTimeStamp": data[x]['billingDateTimeStamp'],
+            "clientName": data[x]['clientName'],
+            "dueDate": data[x]['dueDate'],
+            "usage": data[x]['usage'],
+            "prevReading": data[x]['prevReading'],
+            "presentReading": data[x]['presentReading'],
+          });
         }
       }
       await batch.commit();
