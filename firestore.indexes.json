@@ -1,6 +1,24 @@
 {
   "indexes": [
     {
+      "collectionGroup": "employees",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "password",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "username",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "docid",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
       "collectionGroup": "paymentCollection",
       "queryScope": "COLLECTION",
       "fields": [
@@ -38,6 +56,38 @@
         },
         {
           "fieldPath": "datecreated",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "users",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "password",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "username",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "docid",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "waterbill",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "accountNumber",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "billingDate",
           "order": "DESCENDING"
         }
       ]

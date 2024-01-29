@@ -18,11 +18,27 @@ class WaterBillLedgerController extends GetxController {
 
   // BOOLEANS
   RxBool isWaterBillError = false.obs;
+
+  RxBool isClientHovering = false.obs;
+  RxBool isAccountNumbertHovering = false.obs;
+  RxBool isBalanceHovering = false.obs;
+  RxBool isBillingDateHovering = false.obs;
+  RxBool isDueDateHovering = false.obs;
+
+  RxBool isClientUp = false.obs;
+  RxBool isAccountNumbertUp = false.obs;
+  RxBool isBalanceUp = false.obs;
+  RxBool isBillingDateUp = false.obs;
+  RxBool isDueDateUp = false.obs;
+
   // STRING
 
   getWaterBills() async {
     try {
-      var res = await FirebaseFirestore.instance.collection('waterbill').get();
+      var res = await FirebaseFirestore.instance
+          .collection('waterbill')
+          .orderBy('billingDate', descending: true)
+          .get();
       var waterbills = res.docs;
       List data = [];
       if (waterbills.isNotEmpty) {
@@ -379,6 +395,46 @@ class WaterBillLedgerController extends GetxController {
         }
       }
     } catch (_) {}
+  }
+
+  fieldSorter({required String field, required bool isUp}) async {
+    if (field == 'Account no') {
+      if (isUp) {
+        waterBillList
+            .sort((a, b) => a.accountNumber.compareTo(b.accountNumber));
+      } else {
+        waterBillList
+            .sort((b, a) => a.accountNumber.compareTo(b.accountNumber));
+      }
+    }
+    if (field == 'Client') {
+      if (isUp) {
+        waterBillList.sort((a, b) => a.clientName.compareTo(b.clientName));
+      } else {
+        waterBillList.sort((b, a) => a.clientName.compareTo(b.clientName));
+      }
+    }
+    if (field == 'Balance') {
+      if (isUp) {
+        waterBillList.sort((a, b) => a.amount.compareTo(b.amount));
+      } else {
+        waterBillList.sort((b, a) => a.amount.compareTo(b.amount));
+      }
+    }
+    if (field == 'Billing Date') {
+      if (isUp) {
+        waterBillList.sort((a, b) => a.billingDate.compareTo(b.billingDate));
+      } else {
+        waterBillList.sort((b, a) => a.billingDate.compareTo(b.billingDate));
+      }
+    }
+    if (field == 'Due Date') {
+      if (isUp) {
+        waterBillList.sort((a, b) => a.dueDate.compareTo(b.dueDate));
+      } else {
+        waterBillList.sort((b, a) => a.dueDate.compareTo(b.dueDate));
+      }
+    }
   }
 
   @override

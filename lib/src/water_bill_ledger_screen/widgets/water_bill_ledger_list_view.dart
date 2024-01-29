@@ -76,7 +76,7 @@ class WaterBillLedgerListView extends GetView<WaterBillLedgerController> {
                             child: Center(
                               child: Text(
                                 controller.waterBillList[index].amount
-                                    .toString(),
+                                    .toStringAsFixed(2),
                                 style: const TextStyle(
                                     fontWeight: FontWeight.bold),
                               ),

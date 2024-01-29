@@ -8,10 +8,23 @@ class PaymentController extends GetxController {
   RxList<Payments> paymentsList = <Payments>[].obs;
   RxList<Payments> paymentsMasterList = <Payments>[].obs;
 
+  RxBool isReferenceHovering = false.obs;
+  RxBool isAccountNumberHovering = false.obs;
+  RxBool isClientHovering = false.obs;
+  RxBool isAmountHovering = false.obs;
+  RxBool isDateUploadHovering = false.obs;
+
+  RxBool isReferenceUp = false.obs;
+  RxBool isAccountNumbertUp = false.obs;
+  RxBool isClientUp = false.obs;
+  RxBool isAmountUp = false.obs;
+  RxBool isDateUploadUp = false.obs;
+
   getPayments() async {
     try {
       var res = await FirebaseFirestore.instance
           .collection('paymentCollection')
+          .orderBy('dateuploaded', descending: true)
           .get();
       var payments = res.docs;
 
@@ -60,6 +73,46 @@ class PaymentController extends GetxController {
       }
     } else {
       paymentsList.assignAll(paymentsMasterList);
+    }
+  }
+
+  fieldSorter({required String field, required bool isUp}) async {
+    if (field == 'Account no') {
+      if (isUp) {
+        paymentsList.sort((a, b) => a.accountNumber.compareTo(b.accountNumber));
+      } else {
+        paymentsList.sort((b, a) => a.accountNumber.compareTo(b.accountNumber));
+      }
+    }
+    if (field == 'Client') {
+      if (isUp) {
+        paymentsList.sort((a, b) => a.clientName.compareTo(b.clientName));
+      } else {
+        paymentsList.sort((b, a) => a.clientName.compareTo(b.clientName));
+      }
+    }
+    if (field == 'Reference') {
+      if (isUp) {
+        paymentsList.sort((a, b) => a.reference.compareTo(b.reference));
+      } else {
+        paymentsList.sort((b, a) => a.reference.compareTo(b.reference));
+      }
+    }
+    if (field == 'Amount Collected') {
+      if (isUp) {
+        paymentsList
+            .sort((a, b) => a.amountCollected.compareTo(b.amountCollected));
+      } else {
+        paymentsList
+            .sort((b, a) => a.amountCollected.compareTo(b.amountCollected));
+      }
+    }
+    if (field == 'Date Uploaded') {
+      if (isUp) {
+        paymentsList.sort((a, b) => a.dateuploaded.compareTo(b.dateuploaded));
+      } else {
+        paymentsList.sort((b, a) => a.dateuploaded.compareTo(b.dateuploaded));
+      }
     }
   }
 
