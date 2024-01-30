@@ -100,20 +100,26 @@ class ServiceRequestAlertDialog {
                           backgroundColor:
                               MaterialStatePropertyAll(Colors.lightGreen[900])),
                       onPressed: () {
-                        controller.updateStatusAndAssign(
+                        if (controller.selectedEmployee.value.id != "None") {
+                          controller.updateStatusAndAssign(
+                              employeeID: controller.selectedEmployee.value.id,
+                              employeeName:
+                                  "${controller.selectedEmployee.value.firstname} ${controller.selectedEmployee.value.lastname}",
+                              requestID: requestID);
+                          controller.sendNotif(
+                            clientmessage:
+                                "Dear client, the service request '$type' you requested has been approved.",
+                            employeemessage:
+                                "Dear employee, there is a service request '$type' assigned to you. Please check it and take action.",
+                            accountNumber: accountNumber,
+                            status: true,
                             employeeID: controller.selectedEmployee.value.id,
-                            employeeName:
-                                "${controller.selectedEmployee.value.firstname} ${controller.selectedEmployee.value.lastname}",
-                            requestID: requestID);
-                        controller.sendNotif(
-                          clientmessage:
-                              "Dear client, the service request '$type' you requested has been approved.",
-                          employeemessage:
-                              "Dear employee, there is a service request '$type' assigned to you. Please check it and take action.",
-                          accountNumber: accountNumber,
-                          status: true,
-                          employeeID: controller.selectedEmployee.value.id,
-                        );
+                          );
+                        } else {
+                          Get.snackbar("Message", "Please select an employee",
+                              backgroundColor: Colors.red,
+                              colorText: Colors.white);
+                        }
                       },
                       child: const Text("Submit")),
                 ),

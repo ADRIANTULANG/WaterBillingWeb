@@ -26,6 +26,7 @@ class ServiceRequest {
   bool status;
   String id;
   String others;
+  String statusstring;
   List<String> images;
 
   ServiceRequest({
@@ -44,6 +45,7 @@ class ServiceRequest {
     required this.id,
     required this.others,
     required this.images,
+    required this.statusstring,
   });
 
   factory ServiceRequest.fromJson(Map<String, dynamic> json) => ServiceRequest(
@@ -61,6 +63,7 @@ class ServiceRequest {
         employeeid: json["employeeid"],
         contactno: json["contactno"],
         status: json["status"],
+        statusstring: json["statusstring"],
         id: json["id"],
       );
 
@@ -79,6 +82,7 @@ class ServiceRequest {
         "employeeid": employeeid,
         "contactno": contactno,
         "status": status,
+        "statusstring": statusstring,
         "id": id,
       };
 }

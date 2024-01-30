@@ -33,6 +33,9 @@ class ServiceRequestController extends GetxController {
       for (var i = 0; i < request.length; i++) {
         Map mapdata = request[i].data();
         mapdata['id'] = request[i].id;
+        if (mapdata.containsKey('statusstring') == false) {
+          mapdata['statusstring'] = '';
+        }
         mapdata['datecreated'] = request[i]['datecreated'].toDate().toString();
         userslist.add(mapdata);
       }
@@ -77,11 +80,27 @@ class ServiceRequestController extends GetxController {
           .update({
         "employeeName": employeeName,
         "employeeid": employeeID,
-        "status": true
+        "status": true,
+        "statusstring": "Accepted"
       });
       Get.back();
       getServiceRequest();
       Get.snackbar("Message", "Successfully assigned employee to the request",
+          backgroundColor: Colors.green,
+          colorText: Colors.white,
+          snackPosition: SnackPosition.BOTTOM);
+    } catch (_) {}
+  }
+
+  updateRejectStatus({required String requestID}) async {
+    try {
+      await FirebaseFirestore.instance
+          .collection('serviceRequest')
+          .doc(requestID)
+          .update({"status": false, "statusstring": "Rejected"});
+      Get.back();
+      getServiceRequest();
+      Get.snackbar("Message", "Request rejected",
           backgroundColor: Colors.green,
           colorText: Colors.white,
           snackPosition: SnackPosition.BOTTOM);
