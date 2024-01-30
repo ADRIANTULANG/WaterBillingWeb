@@ -67,13 +67,13 @@ class ServiceRequestAlertDialog {
                   width: 100.w,
                   color: const Color(0xFFF0EEEE),
                   child: Obx(() => DropdownButton<Employees>(
-                        value: controller.selectedEmployee,
+                        value: controller.selectedEmployee.value,
                         padding: EdgeInsets.only(left: 1.w),
                         underline: const SizedBox(),
                         elevation: 16,
                         isExpanded: true,
                         onChanged: (Employees? value) {
-                          controller.selectedEmployee = value!;
+                          controller.selectedEmployee.value = value!;
                         },
                         items: controller.employeeesList
                             .map<DropdownMenuItem<Employees>>(
@@ -101,9 +101,9 @@ class ServiceRequestAlertDialog {
                               MaterialStatePropertyAll(Colors.lightGreen[900])),
                       onPressed: () {
                         controller.updateStatusAndAssign(
-                            employeeID: controller.selectedEmployee!.id,
+                            employeeID: controller.selectedEmployee.value.id,
                             employeeName:
-                                "${controller.selectedEmployee!.firstname} ${controller.selectedEmployee!.lastname}",
+                                "${controller.selectedEmployee.value.firstname} ${controller.selectedEmployee.value.lastname}",
                             requestID: requestID);
                         controller.sendNotif(
                           clientmessage:
@@ -112,7 +112,7 @@ class ServiceRequestAlertDialog {
                               "Dear employee, there is a service request '$type' assigned to you. Please check it and take action.",
                           accountNumber: accountNumber,
                           status: true,
-                          employeeID: controller.selectedEmployee!.id,
+                          employeeID: controller.selectedEmployee.value.id,
                         );
                       },
                       child: const Text("Submit")),

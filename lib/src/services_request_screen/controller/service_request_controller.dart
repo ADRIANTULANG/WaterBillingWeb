@@ -11,7 +11,16 @@ class ServiceRequestController extends GetxController {
   RxList<ServiceRequest> serviceRequestMasterList = <ServiceRequest>[].obs;
 
   RxList<Employees> employeeesList = <Employees>[].obs;
-  Employees? selectedEmployee;
+  Rx<Employees> selectedEmployee = Employees(
+          contactno: "",
+          password: "",
+          type: "",
+          datecreated: DateTime.now(),
+          firstname: "",
+          lastname: "",
+          username: "",
+          id: "None")
+      .obs;
 
   getServiceRequest() async {
     try {
@@ -51,9 +60,7 @@ class ServiceRequestController extends GetxController {
         data.add(mapdata);
       }
       employeeesList.assignAll(employeesFromJson(jsonEncode(data)));
-      if (employeeesList.isNotEmpty) {
-        selectedEmployee = employeeesList[0];
-      }
+      employeeesList.insert(0, selectedEmployee.value);
     } catch (_) {
       debugPrint("ERROR FUNCTION(getEmployee) $_");
     }
