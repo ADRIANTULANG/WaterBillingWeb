@@ -208,7 +208,12 @@ class ServiceRequestListView extends GetView<ServiceRequestController> {
                                     child: Text(
                                       controller.serviceRequestList[index]
                                           .statusstring,
-                                      style: const TextStyle(
+                                      style: TextStyle(
+                                          color: controller
+                                                  .serviceRequestList[index]
+                                                  .status
+                                              ? Colors.green
+                                              : Colors.red,
                                           fontWeight: FontWeight.bold),
                                     ),
                                   ),

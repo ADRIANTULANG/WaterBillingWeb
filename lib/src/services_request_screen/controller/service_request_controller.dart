@@ -98,7 +98,6 @@ class ServiceRequestController extends GetxController {
           .collection('serviceRequest')
           .doc(requestID)
           .update({"status": false, "statusstring": "Rejected"});
-      Get.back();
       getServiceRequest();
       Get.snackbar("Message", "Request rejected",
           backgroundColor: Colors.green,
