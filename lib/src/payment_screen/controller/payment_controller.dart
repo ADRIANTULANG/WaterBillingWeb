@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:waterbilling/models/payments_model.dart';
 
@@ -114,6 +115,44 @@ class PaymentController extends GetxController {
         paymentsList.sort((b, a) => a.dateuploaded.compareTo(b.dateuploaded));
       }
     }
+  }
+
+  editPayment(
+      {required String documentID,
+      required String clietname,
+      required String amountCollected,
+      required String reference}) async {
+    try {
+      await FirebaseFirestore.instance
+          .collection('paymentCollection')
+          .doc(documentID)
+          .update({
+        "reference": reference,
+        "clientName": clietname,
+        "amountCollected": double.parse(amountCollected),
+      });
+      Get.back();
+      getPayments();
+      Get.snackbar("Message", "Payment updated.",
+          backgroundColor: Colors.green,
+          colorText: Colors.white,
+          snackPosition: SnackPosition.BOTTOM);
+    } catch (_) {}
+  }
+
+  deletePayment({required String documentID}) async {
+    try {
+      await FirebaseFirestore.instance
+          .collection('paymentCollection')
+          .doc(documentID)
+          .delete();
+      Get.back();
+      getPayments();
+      Get.snackbar("Message", "Payment deleted.",
+          backgroundColor: Colors.green,
+          colorText: Colors.white,
+          snackPosition: SnackPosition.BOTTOM);
+    } catch (_) {}
   }
 
   @override

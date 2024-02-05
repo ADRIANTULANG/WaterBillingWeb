@@ -1,38 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import 'package:sizer/sizer.dart';
-import 'package:waterbilling/src/water_bill_ledger_screen/controller/water_bill_ledger_controller.dart';
+import 'package:waterbilling/src/payment_screen/controller/payment_controller.dart';
 
-class WaterBillLedgerAlertDialog {
-  static showLoadingDialog() {
-    Get.dialog(
-      const AlertDialog(
-        contentPadding: EdgeInsets.zero,
-        backgroundColor: Colors.white,
-        content: Padding(
-          padding: EdgeInsets.symmetric(vertical: 20),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              // The loading indicator
-              CircularProgressIndicator(),
-              SizedBox(
-                height: 15,
-              ),
-              // Some text
-              Text('Loading...')
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  static showDeleteBillDialog(
-      {required WaterBillLedgerController controller,
-      required String documentID}) {
+class PaymentAlertDialogs {
+  static showDeletePaymentDialog(
+      {required PaymentController controller, required String documentID}) {
     Get.dialog(
       AlertDialog(
         contentPadding: EdgeInsets.zero,
@@ -44,7 +18,8 @@ class WaterBillLedgerAlertDialog {
             children: [
               Padding(
                 padding: EdgeInsets.only(left: 2.w, right: 2.w, top: 2.h),
-                child: const Text('Are you sure you want to delete this bill?'),
+                child:
+                    const Text('Are you sure you want to delete this payment?'),
               ),
               SizedBox(
                 height: 2.h,
@@ -66,7 +41,7 @@ class WaterBillLedgerAlertDialog {
                       width: 7.w,
                       child: ElevatedButton(
                           onPressed: () {
-                            controller.deleteBill(documentID: documentID);
+                            controller.deletePayment(documentID: documentID);
                           },
                           child: const Text("Yes")),
                     )
@@ -80,27 +55,20 @@ class WaterBillLedgerAlertDialog {
     );
   }
 
-  static showEditWaterBill(
+  static showEditPayment(
       {required String documentID,
       required String clietname,
-      required String remainingbalance,
-      required String billdate,
-      required String duedate,
-      required DateTime billdateOrig,
-      required DateTime duedateOrig,
-      required WaterBillLedgerController controller}) async {
+      required String amount,
+      required String reference,
+      required PaymentController controller}) async {
     TextEditingController clientName = TextEditingController(text: clietname);
-    TextEditingController balance =
-        TextEditingController(text: remainingbalance);
-    RxString billingDate = billdate.obs;
-    RxString dueDate = duedate.obs;
-    DateTime billingDateOrig = billdateOrig;
-    DateTime dueDateOrig = duedateOrig;
+    TextEditingController amountCollected = TextEditingController(text: amount);
+    TextEditingController referenceNo = TextEditingController(text: reference);
 
     Get.dialog(
       AlertDialog(
         title: Text(
-          "Edit Bill",
+          "Edit Payment",
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 5.sp),
         ),
         contentPadding: EdgeInsets.zero,
@@ -150,7 +118,7 @@ class WaterBillLedgerAlertDialog {
               Padding(
                 padding: EdgeInsets.only(left: 2.w, right: 2.w),
                 child: Text(
-                  "Balance",
+                  "Amount",
                   style: TextStyle(fontWeight: FontWeight.w400, fontSize: 4.sp),
                 ),
               ),
@@ -168,7 +136,7 @@ class WaterBillLedgerAlertDialog {
                   inputFormatters: <TextInputFormatter>[
                     FilteringTextInputFormatter.allow(RegExp(r'^[0-9.]*$')),
                   ],
-                  controller: balance,
+                  controller: amountCollected,
                   onEditingComplete: () {
                     // controller.login(
                     //     username: controller.username.text,
@@ -187,87 +155,32 @@ class WaterBillLedgerAlertDialog {
               ),
               Padding(
                 padding: EdgeInsets.only(left: 2.w, right: 2.w),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Billing Date",
-                          style: TextStyle(
-                              fontWeight: FontWeight.w400, fontSize: 4.sp),
-                        ),
-                        SizedBox(
-                          height: .5.h,
-                        ),
-                        InkWell(
-                          onTap: () async {
-                            var billingDateSelected = await showDatePicker(
-                                context: Get.context!,
-                                initialDate: billingDateOrig,
-                                firstDate: DateTime(1950, 1, 1),
-                                lastDate: DateTime(2030, 12, 30));
-                            if (billingDateSelected != null) {
-                              billingDate.value = DateFormat.yMMMd()
-                                  .format(billingDateSelected);
-                              billingDateOrig = billingDateSelected;
-                            }
-                          },
-                          child: Container(
-                            padding: EdgeInsets.only(left: .5.w, top: 2.h),
-                            height: 7.h,
-                            width: 22.w,
-                            decoration: const BoxDecoration(
-                              color: Color(0xFFF0EEEE),
-                            ),
-                            child: Obx(() => Text(billingDate.value)),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.only(
-                            right: 2.w,
-                          ),
-                          child: Text(
-                            "Due Date",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w400, fontSize: 4.sp),
-                          ),
-                        ),
-                        SizedBox(
-                          height: .5.h,
-                        ),
-                        InkWell(
-                          onTap: () async {
-                            var dueDateSelected = await showDatePicker(
-                                context: Get.context!,
-                                initialDate: dueDateOrig,
-                                firstDate: DateTime(1950, 1, 1),
-                                lastDate: DateTime(2030, 12, 30));
-                            if (dueDateSelected != null) {
-                              dueDate.value =
-                                  DateFormat.yMMMd().format(dueDateSelected);
-                              dueDateOrig = dueDateSelected;
-                            }
-                          },
-                          child: Container(
-                            padding: EdgeInsets.only(left: .5.w, top: 2.h),
-                            height: 7.h,
-                            width: 22.w,
-                            decoration: const BoxDecoration(
-                              color: Color(0xFFF0EEEE),
-                            ),
-                            child: Obx(() => Text(dueDate.value)),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
+                child: Text(
+                  "Reference",
+                  style: TextStyle(fontWeight: FontWeight.w400, fontSize: 4.sp),
+                ),
+              ),
+              SizedBox(
+                height: .5.h,
+              ),
+              Container(
+                padding: EdgeInsets.only(left: 2.w, right: 2.w),
+                height: 7.h,
+                width: 50.w,
+                child: TextField(
+                  onChanged: (value) {},
+                  controller: referenceNo,
+                  onEditingComplete: () {
+                    // controller.login(
+                    //     username: controller.username.text,
+                    //     password: controller.password.text);
+                  },
+                  decoration: InputDecoration(
+                      fillColor: const Color(0xFFF0EEEE),
+                      filled: true,
+                      contentPadding: EdgeInsets.only(left: .5.w),
+                      alignLabelWithHint: false,
+                      border: InputBorder.none),
                 ),
               ),
               SizedBox(
@@ -280,18 +193,20 @@ class WaterBillLedgerAlertDialog {
                       backgroundColor:
                           MaterialStatePropertyAll(Colors.lightGreen[900])),
                   onPressed: () {
-                    if (clientName.text.isEmpty || balance.text.isEmpty) {
+                    if (clientName.text.isEmpty ||
+                        amountCollected.text.isEmpty ||
+                        referenceNo.text.isEmpty) {
                       Get.snackbar("Message", "Missing input",
                           backgroundColor: Colors.red,
                           colorText: Colors.white,
                           snackPosition: SnackPosition.BOTTOM);
                     } else {
-                      controller.editBill(
-                          documentID: documentID,
-                          clietname: clientName.text,
-                          remainingbalance: balance.text,
-                          billdate: billingDateOrig,
-                          duedate: dueDateOrig);
+                      controller.editPayment(
+                        reference: referenceNo.text,
+                        documentID: documentID,
+                        clietname: clientName.text,
+                        amountCollected: amountCollected.text,
+                      );
                     }
                   },
                   child: Padding(

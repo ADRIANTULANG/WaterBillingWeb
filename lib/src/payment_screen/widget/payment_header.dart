@@ -210,7 +210,7 @@ class PaymentHeaderView extends GetView<PaymentController> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       const Text(
-                        "Client.",
+                        "Date.",
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                       InkWell(
@@ -240,6 +240,14 @@ class PaymentHeaderView extends GetView<PaymentController> {
                       )
                     ],
                   ),
+                ),
+              ),
+            ),
+            const Expanded(
+              child: Center(
+                child: Text(
+                  "Actions",
+                  style: TextStyle(fontWeight: FontWeight.bold),
                 ),
               ),
             ),

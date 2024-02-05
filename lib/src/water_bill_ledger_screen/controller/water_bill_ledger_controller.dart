@@ -114,7 +114,9 @@ class WaterBillLedgerController extends GetxController {
                   datamap['reference'] = row[i]!.value.toString();
                 }
               }
-
+              sendNotif(
+                  message: "Your payment has been uploaded to our system.",
+                  accountNumber: datamap['accountNumber']);
               datamap['dateuploaded'] = Timestamp.now();
               // print("$count $datamap");
               data.add(datamap);
@@ -259,13 +261,16 @@ class WaterBillLedgerController extends GetxController {
           "prevReading": bill['prevReading'],
           "presentReading": bill['presentReading'],
           "usage": bill['usage'],
-          "amount": bill['amount'],
+          "amount": bill['amount'] - bill['discount'],
           "discount": bill['discount'],
           "billingDate": bill['billingDate'],
           "billingDateTimeStamp": bill['billingDateTimeStamp'],
           "clientName": bill['clientName'],
           "dueDate": bill['dueDate'],
         });
+        sendNotif(
+            message: "Your bill has been uploaded to our system.",
+            accountNumber: bill['accountNumber']);
       }
       await batch.commit();
     } catch (_) {
@@ -307,7 +312,7 @@ class WaterBillLedgerController extends GetxController {
           batch.set(newdoc, {
             "iDnumber": data[x]['iDnumber'],
             "accountNumber": data[x]['accountNumber'],
-            "amount": data[x]['amount'],
+            "amount": data[x]['amount'] - data[x]['discount'],
             "discount": data[x]['discount'],
             "billingDate": data[x]['billingDate'],
             "billingDateTimeStamp": data[x]['billingDateTimeStamp'],
@@ -322,7 +327,7 @@ class WaterBillLedgerController extends GetxController {
           batch.set(newleddoc, {
             "iDnumber": data[x]['iDnumber'],
             "accountNumber": data[x]['accountNumber'],
-            "amount": data[x]['amount'],
+            "amount": data[x]['amount'] - data[x]['discount'],
             "discount": data[x]['discount'],
             "billingDate": data[x]['billingDate'],
             "billingDateTimeStamp": data[x]['billingDateTimeStamp'],
@@ -435,6 +440,48 @@ class WaterBillLedgerController extends GetxController {
         waterBillList.sort((b, a) => a.dueDate.compareTo(b.dueDate));
       }
     }
+  }
+
+  editBill({
+    required String documentID,
+    required String clietname,
+    required String remainingbalance,
+    required DateTime billdate,
+    required DateTime duedate,
+  }) async {
+    try {
+      await FirebaseFirestore.instance
+          .collection('waterbill')
+          .doc(documentID)
+          .update({
+        "billingDate": billdate,
+        "billingDateTimeStamp": billdate,
+        "dueDate": duedate,
+        "clientName": clietname,
+        "amount": double.parse(remainingbalance),
+      });
+      Get.back();
+      getWaterBills();
+      Get.snackbar("Message", "Bill updated.",
+          backgroundColor: Colors.green,
+          colorText: Colors.white,
+          snackPosition: SnackPosition.BOTTOM);
+    } catch (_) {}
+  }
+
+  deleteBill({required String documentID}) async {
+    try {
+      await FirebaseFirestore.instance
+          .collection('waterbill')
+          .doc(documentID)
+          .delete();
+      Get.back();
+      getWaterBills();
+      Get.snackbar("Message", "Bill deleted.",
+          backgroundColor: Colors.green,
+          colorText: Colors.white,
+          snackPosition: SnackPosition.BOTTOM);
+    } catch (_) {}
   }
 
   @override

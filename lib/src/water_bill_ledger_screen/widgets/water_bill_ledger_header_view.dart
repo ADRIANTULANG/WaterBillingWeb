@@ -246,7 +246,23 @@ class WaterBillLedgerHeaderView extends GetView<WaterBillLedgerController> {
             const Expanded(
               child: Center(
                 child: Text(
-                  "Action",
+                  "      ",
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+              ),
+            ),
+            const Expanded(
+              child: Center(
+                child: Text(
+                  "Actions",
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+              ),
+            ),
+            const Expanded(
+              child: Center(
+                child: Text(
+                  "      ",
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
               ),
