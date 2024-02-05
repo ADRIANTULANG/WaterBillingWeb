@@ -111,7 +111,7 @@ class WaterBillLedgerListView extends GetView<WaterBillLedgerController> {
                                   child: Center(
                                       child: Padding(
                                     padding: EdgeInsets.only(
-                                        left: .5.w, right: .5.w),
+                                        left: .3.w, right: .3.w),
                                     child: ElevatedButton(
                                       style: ButtonStyle(
                                           backgroundColor:
@@ -123,6 +123,7 @@ class WaterBillLedgerListView extends GetView<WaterBillLedgerController> {
                                                 .read('role') ==
                                             "admin") {
                                           controller.sendNotif(
+                                              method: "Due notification",
                                               accountNumber: controller
                                                   .waterBillList[index]
                                                   .accountNumber,
@@ -148,9 +149,10 @@ class WaterBillLedgerListView extends GetView<WaterBillLedgerController> {
                                           SizedBox(
                                             width: 0.02.w,
                                           ),
-                                          const Icon(
+                                          Icon(
                                             Icons.notification_add,
                                             color: Colors.white,
+                                            size: 3.5.sp,
                                           )
                                         ],
                                       ),
@@ -170,7 +172,7 @@ class WaterBillLedgerListView extends GetView<WaterBillLedgerController> {
                           Expanded(
                             child: Center(
                                 child: Padding(
-                              padding: EdgeInsets.only(left: .5.w, right: .5.w),
+                              padding: EdgeInsets.only(left: .3.w, right: .3.w),
                               child: ElevatedButton(
                                 style: ButtonStyle(
                                     backgroundColor: MaterialStatePropertyAll(
@@ -219,9 +221,10 @@ class WaterBillLedgerListView extends GetView<WaterBillLedgerController> {
                                     SizedBox(
                                       width: 0.02.w,
                                     ),
-                                    const Icon(
+                                    Icon(
                                       Icons.edit,
                                       color: Colors.white,
+                                      size: 3.5.sp,
                                     )
                                   ],
                                 ),
@@ -231,7 +234,7 @@ class WaterBillLedgerListView extends GetView<WaterBillLedgerController> {
                           Expanded(
                             child: Center(
                                 child: Padding(
-                              padding: EdgeInsets.only(left: .5.w, right: .5.w),
+                              padding: EdgeInsets.only(left: .3.w, right: .3.w),
                               child: ElevatedButton(
                                 style: ButtonStyle(
                                     backgroundColor: MaterialStatePropertyAll(
@@ -266,15 +269,138 @@ class WaterBillLedgerListView extends GetView<WaterBillLedgerController> {
                                     SizedBox(
                                       width: 0.02.w,
                                     ),
-                                    const Icon(
+                                    Icon(
                                       Icons.delete,
                                       color: Colors.white,
+                                      size: 3.5.sp,
                                     )
                                   ],
                                 ),
                               ),
                             )),
-                          )
+                          ),
+                          controller.waterBillList[index].isPenaltyAdded
+                              ? const Expanded(
+                                  child: Center(
+                                    child: Text(
+                                      " --- ",
+                                      // controller.waterBillList[index].bil.toString(),
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ),
+                                )
+                              : Expanded(
+                                  child: Center(
+                                      child: Padding(
+                                    padding: EdgeInsets.only(
+                                        left: .3.w, right: .3.w),
+                                    child: ElevatedButton(
+                                      style: ButtonStyle(
+                                          backgroundColor:
+                                              MaterialStatePropertyAll(
+                                                  Colors.lightGreen[900])),
+                                      onPressed: () {
+                                        if (Get.find<StorageServices>()
+                                                .storage
+                                                .read('role') ==
+                                            "admin") {
+                                          controller.addPenalty(
+                                              docID: controller
+                                                  .waterBillList[index].id,
+                                              amount: controller
+                                                  .waterBillList[index].amount);
+                                        } else {
+                                          Get.snackbar("Message",
+                                              "Sorry. only the admin can delete a bill.",
+                                              backgroundColor: Colors.green,
+                                              colorText: Colors.white);
+                                        }
+                                      },
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          const Text(
+                                            "Penalty ",
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.white),
+                                          ),
+                                          SizedBox(
+                                            width: 0.02.w,
+                                          ),
+                                          Icon(
+                                            Icons.warning,
+                                            color: Colors.white,
+                                            size: 3.5.sp,
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  )),
+                                ),
+                          controller.waterBillList[index].isInterestAdded
+                              ? const Expanded(
+                                  child: Center(
+                                    child: Text(
+                                      " --- ",
+                                      // controller.waterBillList[index].bil.toString(),
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ),
+                                )
+                              : Expanded(
+                                  child: Center(
+                                      child: Padding(
+                                    padding: EdgeInsets.only(
+                                        left: .3.w, right: .3.w),
+                                    child: ElevatedButton(
+                                      style: ButtonStyle(
+                                          backgroundColor:
+                                              MaterialStatePropertyAll(
+                                                  Colors.lightGreen[900])),
+                                      onPressed: () {
+                                        if (Get.find<StorageServices>()
+                                                .storage
+                                                .read('role') ==
+                                            "admin") {
+                                          controller.addInterest(
+                                              docID: controller
+                                                  .waterBillList[index].id,
+                                              amount: controller
+                                                  .waterBillList[index].amount);
+                                        } else {
+                                          Get.snackbar("Message",
+                                              "Sorry. only the admin can delete a bill.",
+                                              backgroundColor: Colors.green,
+                                              colorText: Colors.white);
+                                        }
+                                      },
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          const Text(
+                                            "Interest ",
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.white),
+                                          ),
+                                          SizedBox(
+                                            width: 0.02.w,
+                                          ),
+                                          Icon(
+                                            Icons.percent,
+                                            color: Colors.white,
+                                            size: 3.5.sp,
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  )),
+                                ),
                         ],
                       ),
                       SizedBox(

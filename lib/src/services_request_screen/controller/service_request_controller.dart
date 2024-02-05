@@ -163,6 +163,7 @@ class ServiceRequestController extends GetxController {
         String fcmToken = user.docs[0].get('fcmToken');
         if (fcmToken != "") {
           Get.find<NotificationServices>().sendNotification(
+              from: "service request",
               userToken: fcmToken,
               message: clientmessage,
               title: "Service Request Notification");
@@ -177,6 +178,7 @@ class ServiceRequestController extends GetxController {
           String fcmToken = employee.get('fcmToken');
           if (fcmToken != "") {
             Get.find<NotificationServices>().sendNotification(
+                from: "service request",
                 userToken: fcmToken,
                 message: employeemessage,
                 title: "Service Request Notification");

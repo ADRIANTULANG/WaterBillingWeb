@@ -86,7 +86,10 @@ class ConcessionaireController extends GetxController {
   notifyConcessionaire(
       {required String fcmToken, required String message}) async {
     Get.find<NotificationServices>().sendNotification(
-        userToken: fcmToken, message: message, title: "Account Notification");
+        from: "Account",
+        userToken: fcmToken,
+        message: message,
+        title: "Account Notification");
   }
 
   @override

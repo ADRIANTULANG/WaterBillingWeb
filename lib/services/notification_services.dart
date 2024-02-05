@@ -8,6 +8,7 @@ class NotificationServices extends GetxController {
   // SEND NOTIF
   sendNotification(
       {required String userToken,
+      required String from,
       required String message,
       required String title}) async {
     var body = jsonEncode({
@@ -26,8 +27,11 @@ class NotificationServices extends GetxController {
         },
         body: body);
     if (res.statusCode == 200) {
-      Get.snackbar("Message", "Successfully notified.",
-          backgroundColor: Colors.green, colorText: Colors.white);
+      if (from == 'payment collection' || from == 'save water bill') {
+      } else {
+        Get.snackbar("Message", "Successfully notified.",
+            backgroundColor: Colors.green, colorText: Colors.white);
+      }
     }
   }
 }

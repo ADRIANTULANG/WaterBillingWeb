@@ -19,6 +19,11 @@ class WaterBilling {
   String accountNumber;
   String id;
   bool isDue;
+  bool isInterestAdded;
+  bool isPenaltyAdded;
+  double interest;
+  double penalty;
+  double originalAmount;
 
   WaterBilling({
     required this.billingDate,
@@ -33,6 +38,11 @@ class WaterBilling {
     required this.accountNumber,
     required this.id,
     required this.isDue,
+    required this.isInterestAdded,
+    required this.isPenaltyAdded,
+    required this.interest,
+    required this.penalty,
+    required this.originalAmount,
   });
 
   factory WaterBilling.fromJson(Map<String, dynamic> json) => WaterBilling(
@@ -40,6 +50,9 @@ class WaterBilling {
         billingDateTimeStamp: DateTime.parse(json["billingDateTimeStamp"]),
         usage: double.parse(json["usage"].toString()),
         amount: double.parse(json["amount"].toString()),
+        penalty: double.parse(json["penalty"].toString()),
+        originalAmount: double.parse(json["originalAmount"].toString()),
+        interest: double.parse(json["interest"].toString()),
         prevReading: double.parse(json["prevReading"].toString()),
         discount: double.parse(json["discount"].toString()),
         dueDate: DateTime.parse(json["dueDate"]),
@@ -48,6 +61,8 @@ class WaterBilling {
         accountNumber: json["accountNumber"],
         id: json["id"],
         isDue: json["isDue"],
+        isInterestAdded: json["isInterestAdded"],
+        isPenaltyAdded: json["isPenaltyAdded"],
       );
 
   Map<String, dynamic> toJson() => {

@@ -114,9 +114,7 @@ class WaterBillLedgerController extends GetxController {
                   datamap['reference'] = row[i]!.value.toString();
                 }
               }
-              sendNotif(
-                  message: "Your payment has been uploaded to our system.",
-                  accountNumber: datamap['accountNumber']);
+
               datamap['dateuploaded'] = Timestamp.now();
               // print("$count $datamap");
               data.add(datamap);
@@ -129,6 +127,10 @@ class WaterBillLedgerController extends GetxController {
                 var newPaymentDocRef = FirebaseFirestore.instance
                     .collection('paymentCollection')
                     .doc();
+                sendNotif(
+                    method: "payment collection",
+                    message: "Your payment has been uploaded to our system.",
+                    accountNumber: datamap['accountNumber']);
                 batch.set(newPaymentDocRef, {
                   "accountNumber": datamap['accountNumber'],
                   "clientName": datamap['clientName'],
@@ -142,13 +144,27 @@ class WaterBillLedgerController extends GetxController {
                     .limit(1)
                     .get();
                 if (billres.docs.isNotEmpty) {
+                  bool isPenaltyAdded = true;
+                  bool isInterestAdded = true;
+
                   var billdetail = billres.docs[0];
                   var billdocref = FirebaseFirestore.instance
                       .collection('waterbill')
                       .doc(billdetail.id);
                   var newAmount =
                       billdetail['amount'] - datamap['amountCollected'];
-                  batch.update(billdocref, {"amount": newAmount});
+                  if (newAmount > 0) {
+                    isPenaltyAdded = false;
+                    isInterestAdded = false;
+                  }
+                  batch.update(billdocref, {
+                    "amount": newAmount,
+                    "isPenaltyAdded": isPenaltyAdded,
+                    "isInterestAdded": isInterestAdded,
+                    "originalAmount": newAmount,
+                    "penalty": 0.0,
+                    "interest": 0.0,
+                  });
                 }
               }
             }
@@ -267,8 +283,14 @@ class WaterBillLedgerController extends GetxController {
           "billingDateTimeStamp": bill['billingDateTimeStamp'],
           "clientName": bill['clientName'],
           "dueDate": bill['dueDate'],
+          "isPenaltyAdded": true,
+          "isInterestAdded": true,
+          "originalAmount": bill['amount'] - bill['discount'],
+          "penalty": 0.0,
+          "interest": 0.0,
         });
         sendNotif(
+            method: "save water bill",
             message: "Your bill has been uploaded to our system.",
             accountNumber: bill['accountNumber']);
       }
@@ -296,16 +318,25 @@ class WaterBillLedgerController extends GetxController {
           }
         }
         if (isExist) {
+          bool isPenalty = true;
+          bool isInterest = true;
           var newBalance =
               (data[x]['amount'] - data[x]['discount']) + oldAmount;
           if (newBalance > 0) {
-            newBalance = newBalance + (oldAmount * 0.10);
+            // newBalance = newBalance + (oldAmount * 0.10);
+            isPenalty = false;
+            isInterest = false;
           }
           batch.update(documentRef, {
             "amount": newBalance,
             "dueDate": data[x]['dueDate'],
             "billingDate": data[x]['billingDate'],
             "billingDateTimeStamp": data[x]['billingDateTimeStamp'],
+            "isPenaltyAdded": isPenalty,
+            "isInterestAdded": isInterest,
+            "originalAmount": newBalance,
+            "penalty": 0.0,
+            "interest": 0.0,
           });
         } else {
           var newdoc = FirebaseFirestore.instance.collection('waterbill').doc();
@@ -321,6 +352,11 @@ class WaterBillLedgerController extends GetxController {
             "usage": data[x]['usage'],
             "prevReading": data[x]['prevReading'],
             "presentReading": data[x]['presentReading'],
+            "isPenaltyAdded": true,
+            "isInterestAdded": true,
+            "originalAmount": data[x]['amount'] - data[x]['discount'],
+            "penalty": 0.0,
+            "interest": 0.0,
           });
           var newleddoc =
               FirebaseFirestore.instance.collection('waterbillLedgers').doc();
@@ -336,6 +372,11 @@ class WaterBillLedgerController extends GetxController {
             "usage": data[x]['usage'],
             "prevReading": data[x]['prevReading'],
             "presentReading": data[x]['presentReading'],
+            "isPenaltyAdded": true,
+            "isInterestAdded": true,
+            "originalAmount": data[x]['amount'] - data[x]['discount'],
+            "penalty": 0.0,
+            "interest": 0.0,
           });
         }
       }
@@ -384,7 +425,10 @@ class WaterBillLedgerController extends GetxController {
     }
   }
 
-  sendNotif({required String message, required String accountNumber}) async {
+  sendNotif(
+      {required String message,
+      required String accountNumber,
+      required String method}) async {
     try {
       var res = await FirebaseFirestore.instance
           .collection('users')
@@ -394,6 +438,7 @@ class WaterBillLedgerController extends GetxController {
         String fcmToken = res.docs[0].get('fcmToken');
         if (fcmToken != "") {
           Get.find<NotificationServices>().sendNotification(
+              from: method,
               userToken: fcmToken,
               message: message,
               title: "Water Bill Notification");
@@ -482,6 +527,36 @@ class WaterBillLedgerController extends GetxController {
           colorText: Colors.white,
           snackPosition: SnackPosition.BOTTOM);
     } catch (_) {}
+  }
+
+  addPenalty({
+    required String docID,
+    required double amount,
+  }) async {
+    double penaltyAmount = amount * 0.10;
+    double newAmount = amount + penaltyAmount;
+    await FirebaseFirestore.instance.collection('waterbill').doc(docID).update({
+      "amount": newAmount,
+      "isPenaltyAdded": true,
+      "penalty": penaltyAmount,
+    });
+    getWaterBills();
+    try {} catch (_) {}
+  }
+
+  addInterest({
+    required String docID,
+    required double amount,
+  }) async {
+    double interestAmount = amount * 0.01;
+    double newAmount = amount + interestAmount;
+    await FirebaseFirestore.instance.collection('waterbill').doc(docID).update({
+      "amount": newAmount,
+      "isInterestAdded": true,
+      "interest": interestAmount,
+    });
+    getWaterBills();
+    try {} catch (_) {}
   }
 
   @override
