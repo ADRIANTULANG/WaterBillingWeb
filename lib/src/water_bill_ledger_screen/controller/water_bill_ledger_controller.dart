@@ -495,22 +495,42 @@ class WaterBillLedgerController extends GetxController {
     required DateTime duedate,
   }) async {
     try {
-      await FirebaseFirestore.instance
+      var billDetails = await FirebaseFirestore.instance
           .collection('waterbill')
           .doc(documentID)
-          .update({
-        "billingDate": billdate,
-        "billingDateTimeStamp": billdate,
-        "dueDate": duedate,
-        "clientName": clietname,
-        "amount": double.parse(remainingbalance),
-      });
-      Get.back();
-      getWaterBills();
-      Get.snackbar("Message", "Bill updated.",
-          backgroundColor: Colors.green,
-          colorText: Colors.white,
-          snackPosition: SnackPosition.BOTTOM);
+          .get();
+
+      if (billDetails.exists) {
+        double balance = double.parse(remainingbalance);
+        bool isPenaltyAdded = billDetails.get('isPenaltyAdded');
+        bool isInterestAdded = billDetails.get('isInterestAdded');
+
+        if (isPenaltyAdded) {
+          double penaltyAmount = balance * 0.10;
+          balance = balance + penaltyAmount;
+        }
+        if (isInterestAdded) {
+          double interestAmount = balance * 0.01;
+          balance = balance + interestAmount;
+        }
+
+        await FirebaseFirestore.instance
+            .collection('waterbill')
+            .doc(documentID)
+            .update({
+          "billingDate": billdate,
+          "billingDateTimeStamp": billdate,
+          "dueDate": duedate,
+          "clientName": clietname,
+          "amount": balance,
+        });
+        Get.back();
+        getWaterBills();
+        Get.snackbar("Message", "Bill updated.",
+            backgroundColor: Colors.green,
+            colorText: Colors.white,
+            snackPosition: SnackPosition.BOTTOM);
+      }
     } catch (_) {}
   }
 
